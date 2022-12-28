@@ -1,11 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserRepositoryPort } from 'src/infrastructure/user-repository';
-import { CreateUserDto } from 'src/user/dto';
+import { CreateUserDto, GetUserDto } from 'src/user/dto';
 import { AccessLevel, User } from 'src/user/entities';
 
 import { hashSync } from 'bcryptjs';
 import { randomUUID } from 'crypto';
-import { GetUserDto } from 'src/user/dto/get-user.dto';
 
 @Injectable()
 export class UserService {

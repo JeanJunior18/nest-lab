@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UserRepositoryPort } from 'src/infrastructure/user-repository';
-import { UserRepositoryAdapter } from 'src/infrastructure/user-repository/user-repository.adapter';
+import {
+  UserRepositoryAdapter,
+  UserRepositoryPort,
+} from 'src/infrastructure/user-repository';
 
 @Module({
   providers: [{ provide: UserRepositoryPort, useClass: UserRepositoryAdapter }],
