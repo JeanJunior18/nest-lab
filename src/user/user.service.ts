@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { UserRepositoryPort } from 'src/infrastructure/user-repository';
 import { CreateUserDto, GetUserDto } from 'src/user/dto';
 import { AccessLevel, User } from 'src/user/entities';
@@ -21,8 +21,9 @@ export class UserService {
     if (hasUsername) {
       const message = 'User already exists';
       this.logger.error(message);
-      throw new Error(message);
+      throw new HttpException(message, 403);
     }
+    this.logger.verbose(`Creating a new user ${username}`);
 
     const user = new User();
     user.id = randomUUID();
@@ -33,12 +34,18 @@ export class UserService {
     user.createdAt = new Date();
     user.updatedAt = new Date();
 
+    await this.userRepository.create(user);
+
     return new GetUserDto(user);
   }
 
   async findByUsername(username: User['username']) {
     this.logger.verbose(`looking for user with email: ${username}`);
     const user = await this.userRepository.findByUserName(username);
-    return user;
+    if (user) {
+      this.logger.verbose(`User ${username} found`);
+      return user;
+    }
+    this.logger.verbose(`User ${username} not found`);
   }
 }
