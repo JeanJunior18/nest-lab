@@ -3,9 +3,9 @@ services:
   postgres:
     image: postgres:13
     restart: always
-    container_name: nest-lab-postgres
+    container_name: integration-test-postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
